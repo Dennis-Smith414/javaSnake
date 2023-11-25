@@ -16,7 +16,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	int applesEaten;
 	int appleX;
 	int appleY;
-	char direction = 'r';
+	char direction = 'R';
 	boolean running = false;
 	Timer timer;
 	Random random;
@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
 		this.setBackground(Color.black);
 		this.setFocusable(true);
-		this.addKeyListener(new MyKeyAdapter());
+	    this.addKeyListener(new MyKeyAdapter());
 		startGame();
 	}
 	public void startGame() {
@@ -70,7 +70,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	
 	public void move() {
-		for(int i = bodyParts;i>0;i--) {
+		for(int i = bodyParts; i>0;i--) {
 			x[i] = x[i-1];
 			y[i] = y[i-1];
 		}
@@ -96,8 +96,36 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	
 	public void checkCollisions() {
-		
+		//checks if head is has collided with body
+		for(int i = bodyParts;i>0;i--) {
+			if((x[0] == x[i])&& (y[0] == y[i])) {
+				running = false;
+			}
+		}
+		//head touches left border
+		if(x[0] < 0) {
+			running = false;
+		}
+		//head touches right border
+		if(x[0] > SCREEN_WIDTH) {
+			running = false;
+		}
+		//head touches top border
+		if(y[0] < 0) {
+			running = false;
+		}
+		//head touches right border
+		if(y[0] > SCREEN_HEIGHT) {
+			running = false;
+		}
+	
+		if(!running) {
+			timer.stop();
+		}
 	}
+	
+	
+
 	
 	public void gameOver(Graphics g) {
 		
@@ -117,7 +145,28 @@ public class GamePanel extends JPanel implements ActionListener{
 	public class MyKeyAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
-			
-		}
+			switch(e.getKeyCode()) {
+            case KeyEvent.VK_LEFT:
+                if(direction != 'R') {
+                    direction = 'L';
+                }
+                break;
+            case KeyEvent.VK_RIGHT:
+                if(direction != 'L') {
+                    direction = 'R';
+                }
+                break;
+            case KeyEvent.VK_UP:
+                if(direction != 'D') {
+                    direction = 'U';
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                if(direction != 'U') {
+                    direction = 'D';
+                }
+                break;
+		
 	}
-}
+
+}}}
